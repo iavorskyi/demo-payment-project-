@@ -79,7 +79,7 @@ func createTransaction(w http.ResponseWriter, r *http.Request) {
 			}
 
 			// write response message
-			responseMsg = fmt.Sprintf("Success. Your current balance: %.2f", wallet.Balance)
+			responseMsg = fmt.Sprintf("Success. Your current balance: %.3f", wallet.Balance)
 
 		} else {
 			status = 2
@@ -98,7 +98,7 @@ func createTransaction(w http.ResponseWriter, r *http.Request) {
 		}
 		status = 1
 		// write response message
-		responseMsg = fmt.Sprintf("Success. Your current balance: %.2f", wallet.Balance)
+		responseMsg = fmt.Sprintf("Success. Your current balance: %.3f", wallet.Balance)
 	}
 
 	// create a transaction struct to insert in db
@@ -147,7 +147,7 @@ func getBalance(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// make and fill in a result map for response
-	responseMap := make(map[string]float32)
+	responseMap := make(map[string]string)
 	for _, wallet := range wallets {
 		var currency currencyModel
 
@@ -157,7 +157,7 @@ func getBalance(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Failed to get currency: %s", err)
 			return
 		}
-		responseMap[currency.CurrencyName] = wallet.Balance
+		responseMap[currency.CurrencyName] = fmt.Sprintf("%.3f", wallet.Balance)
 	}
 	// send the response
 	err = ren.JSON(w, http.StatusOK, responseMap)

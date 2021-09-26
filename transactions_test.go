@@ -89,30 +89,30 @@ func TestTransactions(t *testing.T) {
 	// deposit to test EURO wallet
 	expectedNewBalanceEURO := depositEUROPayload.Amount + testWalletEURO.Balance
 	_ = e.POST(transactionCreatePath).
-		WithJSON(depositEUROPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.2f\"", expectedNewBalanceEURO))
+		WithJSON(depositEUROPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.3f\"", expectedNewBalanceEURO))
 
 	// deposit to test USD wallet
 	expectedNewBalanceUSD := depositUSDPayload.Amount + testWalletUSD.Balance
 	_ = e.POST(transactionCreatePath).
-		WithJSON(depositUSDPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.2f\"", expectedNewBalanceUSD))
+		WithJSON(depositUSDPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.3f\"", expectedNewBalanceUSD))
 
 	// withdraw from test EURO wallet (enough money)
 	expectedNewBalanceEURO = expectedNewBalanceEURO - depositEUROPayload.Amount
 	_ = e.POST(transactionCreatePath).
-		WithJSON(withdrawalEUROPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.2f\"", expectedNewBalanceEURO))
+		WithJSON(withdrawalEUROPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.3f\"", expectedNewBalanceEURO))
 
 	// withdraw from test USD wallet (enough money)
 	expectedNewBalanceUSD = expectedNewBalanceUSD - depositUSDPayload.Amount
 	_ = e.POST(transactionCreatePath).
-		WithJSON(withdrawalUSDPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.2f\"", expectedNewBalanceUSD))
+		WithJSON(withdrawalUSDPayload).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprintf("\"Success. Your current balance: %.3f\"", expectedNewBalanceUSD))
 
 	// withdraw from test EURO wallet (not enough money)
 	_ = e.POST(transactionCreatePath).
-		WithJSON(withdrawalEUROPayloadStatus2).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprint("\"Failed. There is not enough of money in the wallet\""))
+		WithJSON(withdrawalEUROPayloadStatus2).Expect().Status(http.StatusOK).Body().Equal("\"Failed. There is not enough of money in the wallet\"")
 
 	// withdraw from test USD wallet (not enough money)
 	_ = e.POST(transactionCreatePath).
-		WithJSON(withdrawalUSDPayloadStatus2).Expect().Status(http.StatusOK).Body().Equal(fmt.Sprint("\"Failed. There is not enough of money in the wallet\""))
+		WithJSON(withdrawalUSDPayloadStatus2).Expect().Status(http.StatusOK).Body().Equal("\"Failed. There is not enough of money in the wallet\"")
 
 	///////////////////////////// Clean up
 
